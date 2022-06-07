@@ -1,4 +1,5 @@
 import * as types from "./actionTypes";
+import * as courseApi from "../../api/courseApi";
 
 
 export function createCourse(course){
@@ -6,4 +7,21 @@ export function createCourse(course){
         type: types.CREATE_COURSE,
         course
     };
+}
+
+export function loadCoursesSuccess(courses){
+	// eslint-disable-next-line import/namespace
+	return {type: types.LOAD_COURSES_SUCCESS, courses};
+}
+
+export function loadCourses(){
+	return function(dispatch){
+		return 	courseApi.getCourses()
+			.then(courses => {
+				dispatch(loadCoursesSuccess(courses));
+			})
+			.catch(error => {
+				throw(error);
+			});
+	}
 }
